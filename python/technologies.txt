@@ -1,0 +1,110 @@
+.NET
+Active Server Pages
+Android
+Angular
+Apache
+Apache Cocoon
+Apache Struts
+Apache Wicket
+Asp.net
+Aspnet
+Assembly
+Bash
+Bootstrap
+Bottle
+ C 
+ C,
+C#
+Cake PHP
+Cake PHP
+Catalyst
+CherryPy
+CodeIgniter
+CodeIgniter, Drupal
+CoffeeScript
+C++
+CSS
+Django
+Drupal
+Ember
+Ember
+Express 
+Express,
+Express)
+Express.js
+F#
+Fat-Free Framework
+Firebase
+Flask
+FuelPHP
+git
+Golang
+Grails
+Grok
+HTML
+Java 
+Java)
+Java,
+JavaScript
+JHipster
+jQuery
+Laravel
+Lift
+Linux
+Mason
+Matlab
+Meteor
+Mojolicious
+mongodb
+MooTools
+MySQL
+Node.js
+Objective-C
+Padrino
+Perl
+Phalcon
+PHP
+PLAY
+postgre
+PRADO
+Pylons web framework
+Python
+Quixote
+ R,
+React
+React)
+React,
+React.js
+React.js
+React.js
+React Native
+Robot-framework
+Ruby 
+Ruby,
+Ruby)
+Ruby on Rails
+Rust
+Sails.js
+sass
+Scalatra
+scss
+Seaside
+Shell
+Sinatra
+Spring
+SQL
+Stripes
+Swift
+Symfony
+TurboGears
+Typescript
+Unity
+Vue
+web2py
+webpy
+Wt 
+wt,
+wt)
+Yesod
+Yii Framework
+Zend Framework

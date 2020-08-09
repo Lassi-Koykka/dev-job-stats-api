@@ -4,6 +4,7 @@ const logger = require("./middleware/logger");
 const { response } = require("express");
 const { spawn } = require('child_process')
 const fetch = require("node-fetch");
+const { time } = require("console");
 
 const app = express();
 
@@ -16,23 +17,22 @@ app.get("/api", (req, res) => {
 });
 
 app.get("/desc", (req, res) => {
-
   
-    var dataToSend;
-    // spawn new child process to call the python script
-    const python = spawn('python3', ['./python/analyze.py'])
-    // collect data from script
-    python.stdout.on('data', function (data) {
-     console.log('Pipe data from python script ...');
-     dataToSend = data.toString();
-    });
-    // in close event we are sure that stream from child process is closed
-    python.on('close', (code) => {
-    console.log(`child process close all stdio with code ${code}`);
-    // send data to browser
-    console.log(dataToSend)
-    res.send(dataToSend)
-    });
+  var dataToSend;
+  // spawn new child process to call the python script
+  const python = spawn('python3', ['./python/analyze.py'])
+  // collect data from script
+  python.stdout.on('data', function (data) {
+  console.log('Pipe data from python script ...');
+  console.log(data)
+  dataToSend = JSON.parse(data).parse;
+  });
+  // in close event we are sure that stream from child process is closed
+  python.on('close', (code) => {
+  console.log(`child process close all stdio with code ${code}`);
+  // send data to browser
+  res.json(dataToSend)
+  });
 })
 
 async function deliverPostings(req, res) {
