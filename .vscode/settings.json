@@ -9,5 +9,6 @@
         "opiskele",
         "search",
         "search also descr"
-    ]
+    ],
+    "python.pythonPath": "python/venv/bin/python"
 }
