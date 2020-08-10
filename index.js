@@ -29,6 +29,8 @@ app.get("/data/:key", (req, res) => {
   let key = req.params.key
   if(data[key] !== undefined) {
     res.json(data[key])
+  } else {
+    res.status(404).send("Not found")
   }
 });
 
