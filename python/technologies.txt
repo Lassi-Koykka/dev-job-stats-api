@@ -6,9 +6,11 @@ Apache
 Apache Cocoon
 Apache Struts
 Apache Wicket
+API
 Asp.net
 Aspnet
 Assembly
+AWS
 Bash
 Bootstrap
 Bottle
@@ -16,15 +18,14 @@ Bottle
  C,
 C#
 Cake PHP
-Cake PHP
 Catalyst
 CherryPy
 CodeIgniter
-CodeIgniter, Drupal
 CoffeeScript
 C++
 CSS
 Django
+Docker
 Drupal
 Ember
 Ember
@@ -36,6 +37,7 @@ F#
 Fat-Free Framework
 Firebase
 Flask
+flutter
 FuelPHP
 git
 Golang
@@ -46,12 +48,16 @@ Java
 Java)
 Java,
 JavaScript
+Javaserver Pages
+JSON
+JSP
 JHipster
 jQuery
 Laravel
 Lift
 Linux
 Mason
+Maven
 Matlab
 Meteor
 Mojolicious
@@ -59,6 +65,7 @@ mongodb
 MooTools
 MySQL
 Node.js
+NoSQL
 Objective-C
 Padrino
 Perl
@@ -78,6 +85,8 @@ React.js
 React.js
 React.js
 React Native
+Redux
+REST
 Robot-framework
 Ruby 
 Ruby,

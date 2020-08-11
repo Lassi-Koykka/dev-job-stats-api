@@ -5,16 +5,52 @@ const logger = require("./middleware/logger");
 const { response } = require("express");
 const { spawn } = require('child_process')
 const fetch = require("node-fetch");
-const { time } = require("console");
+const { time, Console } = require("console");
 const { pathToFileURL } = require("url");
 
 const app = express();
 
-let data = JSON.parse(fs.readFileSync("data.json"))
+let data
+
+if(fs.existsSync('data.json')) {
+  data = JSON.parse(fs.readFileSync("data.json"))
+} else {
+  data = updateData()
+}
+
+async function updateData() {
+  const python = spawn(path.join(__dirname, 'python', 'venv', 'bin', 'python3'), [path.join(__dirname, 'python', 'getData.py')])
+  console.log("--PYTHON OUTPUT:--")
+
+  python.stdout.on('data', function (data) {
+    console.log(data.toString())
+  });
+  
+  python.on('close', (code) => {
+    console.log("--END OF PYTHON OUTPUT--")
+    console.log(`child process close all stdio with code ${code}`);
+    if (code === 0) {
+      return JSON.parse(fs.readFileSync("data.json"))
+    } else {
+      console.log("ERROR: An error occurred while updating data!")
+    }
+    });
+}
+
+
 
 app.use(logger);
 
-//app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'))
+})
+
+app.get("/data/update", (req, res) => {
+  res.send("Updating data...")
+  data = updateData()
+})
 
 app.get("/api", (req, res) => {
   deliverPostings(req, res);
@@ -30,7 +66,7 @@ app.get("/data/:key", (req, res) => {
   if(data[key] !== undefined) {
     res.json(data[key])
   } else {
-    res.status(404).send("Not found")
+    res.status(404).send("<h2>404 Not found</h2>")
   }
 });
 
