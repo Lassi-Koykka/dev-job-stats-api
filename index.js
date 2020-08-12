@@ -2,26 +2,15 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs")
 const logger = require("./middleware/logger");
-const { response } = require("express");
 const { spawn } = require('child_process')
 const fetch = require("node-fetch");
-const { time, Console } = require("console");
-const { pathToFileURL } = require("url");
 
 const app = express();
 
-let data
-
-if(fs.existsSync('data.json')) {
-  data = JSON.parse(fs.readFileSync("data.json"))
-} else {
-  data = updateData()
-}
-
-async function updateData() {
+async function updateJson() {
   const python = spawn(path.join(__dirname, 'python', 'venv', 'bin', 'python3'), [path.join(__dirname, 'python', 'getData.py')])
   console.log("--PYTHON OUTPUT:--")
-
+  
   python.stdout.on('data', function (data) {
     console.log(data.toString())
   });
@@ -30,13 +19,70 @@ async function updateData() {
     console.log("--END OF PYTHON OUTPUT--")
     console.log(`child process close all stdio with code ${code}`);
     if (code === 0) {
-      return JSON.parse(fs.readFileSync("data.json"))
+      data = JSON.parse(fs.readFileSync(path.join("json","data.json")))
+      posts = JSON.parse(fs.readFileSync(path.join("json","posts.json")))
     } else {
       console.log("ERROR: An error occurred while updating data!")
     }
-    });
+  });
 }
 
+
+async function deliverPostings(req, res) {
+  
+  url = `https://duunitori.fi/api/v1/jobentries?
+  ${req.query.area !== undefined ? `area=${req.query.area}&` : ''}
+  &search=koodari${req.query.words !== undefined ? `,${req.query.words}` : ''}
+  &search_also_descr=1
+  &format=json`;
+  
+  console.log(url)
+  data = await fetch(url).then((response) => {
+    return response.json();
+  });
+  
+  results = data.results;
+  
+  while (data.next !== null) {
+    data = await fetch(data.next).then((response) => {
+      return response.json();
+    });
+    results = results.concat(data.results);
+  }
+  
+  delete data.next;
+  data.query = data.previous;
+  delete data.previous;
+  data.results = results;
+  
+  console.log(data.results.length);
+  
+  res.json(data);
+}
+
+
+
+
+//Run on startup
+
+let data
+let posts
+
+
+if(fs.existsSync(path.join("json", "data.json"))) {
+  console.log("data.json found")
+  data = JSON.parse(fs.readFileSync(path.join("json","data.json")))
+} else {
+  console.log("data.json file not found. Re-Creating them...")
+  updateJson()
+}
+if(fs.existsSync(path.join("json", "posts.json"))) {
+  console.log("posts.json found")
+  posts = JSON.parse(fs.readFileSync(path.join("json","posts.json")))
+} else {
+  console.log("posts.json file not found. Re-Creating them...")
+  updateJson()
+}
 
 
 app.use(logger);
@@ -47,13 +93,13 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'))
 })
 
-app.get("/data/update", (req, res) => {
+app.get("/update", (req, res) => {
   res.send("Updating data...")
-  data = updateData()
+  updateJson()
 })
 
-app.get("/api", (req, res) => {
-  deliverPostings(req, res);
+app.get("/api/posts", (req, res) => {
+  res.json(posts)
 });
 
 app.get("/data", (req, res) => { 
@@ -70,37 +116,6 @@ app.get("/data/:key", (req, res) => {
   }
 });
 
-async function deliverPostings(req, res) {
-
-  url = `https://duunitori.fi/api/v1/jobentries?
-  ${req.query.area !== undefined ? `area=${req.query.area}&` : ''}
-  &search=koodari${req.query.words !== undefined ? `,${req.query.words}` : ''}
-  &search_also_descr=1
-  &format=json`;
-
-    console.log(url)
-  data = await fetch(url).then((response) => {
-    return response.json();
-  });
-
-  results = data.results;
-
-  while (data.next !== null) {
-    data = await fetch(data.next).then((response) => {
-      return response.json();
-    });
-    results = results.concat(data.results);
-  }
-
-  delete data.next;
-  data.query = data.previous;
-  delete data.previous;
-  data.results = results;
-
-  console.log(data.results.length);
-
-  res.json(data);
-}
 
 const PORT = process.env.PORT || 5000;
 

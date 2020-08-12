@@ -10,8 +10,7 @@ from collections import Counter;
 #FUNCTIONS
 def readKeywords(path):
     techList = []   
-    """Read keywords from a text file where each value is on a seperate line
-    """
+    """Read keywords from a text file where each value is on a seperate line"""
     try:
         with open(path) as input_file:
             #stripping newline characters
@@ -94,6 +93,7 @@ async def handleData():
     results = await fetch(url) 
     print("results gotten from: " + url)
     count = results["count"]
+    posts = results["results"]
     tasks.append(parseData(results['results']))
     nextPage = results['next']
 
@@ -101,9 +101,13 @@ async def handleData():
         url = nextPage
         results = await fetch(url)
         print("results gotten from: " + url)
+        posts += results["results"]
         tasks.append(parseData(results['results']))
         nextPage = results['next']
     
+    
+    jsonDataToFile({"count": count, "posts": posts}, Path('./json/posts.json'))
+
     mentions = await asyncio.gather(*tasks, return_exceptions=True)
 
     for m in mentions:
@@ -132,10 +136,20 @@ def formatAndCreateJson(count, kwMentions):
     data["companies"] = companies
     data["locations"] = locations
 
-    jsonData = json.dumps(data)
+    jsonDataToFile(data, Path('./json/data.json'))
 
-    f = open("data.json", "w+")
-    f.write(jsonData)
+
+
+
+def jsonDataToFile(d, path):
+    """Creates/overwrites data to a file in json format"""
+    try:
+        jsonData = json.dumps(d)
+
+        f = open(path, "w+")
+        f.write(jsonData)
+    except Exception as e: print(f"An exception occurred while saving json data to file {path}:\n {e}")
+
 
 #VARIABLES
 KWList = []
@@ -143,7 +157,7 @@ companies = dict()
 locations = dict()
 data = dict()
 
-KWList = readKeywords(Path('./python/technologies.txt'))
+KWList = readKeywords(Path('./keywords/technologies.txt'))
 allMentions, count = asyncio.run(handleData())
 formatAndCreateJson(count, allMentions)
 
