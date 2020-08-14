@@ -1,4 +1,5 @@
 const express = require('express')
+const path = require('path')
 const router = express.Router()
 
 router.route("/")
@@ -14,7 +15,7 @@ router.route("/:key")
         if (data[key] !== undefined) {
             res.json(data[key])
         } else {
-            res.status(404).send("<h2>404 Not found</h2>")
+            res.status(404).sendFile(path.join(__dirname, '..', '..', '..', 'public', '404.html'))
         }
     });
 
