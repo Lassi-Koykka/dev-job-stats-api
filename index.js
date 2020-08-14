@@ -8,7 +8,9 @@ const fetch = require("node-fetch");
 const app = express();
 
 async function updateJson() {
-  const python = spawn(path.join(__dirname, 'python', 'venv', 'bin', 'python3'), [path.join(__dirname, 'python', 'getData.py')])
+  const python = spawn(
+    path.join(__dirname, 'python', 'venv', 'bin', 'python3'), 
+    [path.join(__dirname, 'python', 'getData.py')])
   console.log("--PYTHON OUTPUT:--")
   
   python.stdout.on('data', function (data) {
@@ -64,11 +66,15 @@ async function deliverPostings(req, res) {
 
 
 //Run on startup
-
 let data
 let posts
 
+//Create a json folder if one does not exist
+if (!fs.existsSync('json')){
+  fs.mkdirSync('json')
+}
 
+//Checks if all the json files inside the folder exist and recreates them if they don't
 if(fs.existsSync(path.join("json", "data.json"))) {
   console.log("data.json found")
   data = JSON.parse(fs.readFileSync(path.join("json","data.json")))
