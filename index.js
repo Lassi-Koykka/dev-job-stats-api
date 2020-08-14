@@ -1,8 +1,8 @@
 const express = require("express");
 const path = require("path");
 const fs = require("fs")
-const dataExists = require("./lib/dataExists.js");
-const updateJson = require("./lib/updateJson.js")
+const dataExists = require("./src/dataExists.js");
+const updateJson = require("./src/updateJson.js")
 
 
 //MIDDLEWARE
