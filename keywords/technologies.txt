@@ -17,12 +17,12 @@ Bottle
  C 
  C,
 C#
+C++
 Cake PHP
 Catalyst
 CherryPy
 CodeIgniter
 CoffeeScript
-C++
 CSS
 Django
 Docker
@@ -31,8 +31,8 @@ Ember
 Ember
 Express 
 Express,
-Express)
 Express.js
+Express)
 F#
 Fat-Free Framework
 Firebase
@@ -42,23 +42,24 @@ FuelPHP
 git
 Golang
 Grails
+GraphQL
 Grok
 HTML
 Java 
-Java)
 Java,
+Java)
 JavaScript
 Javaserver Pages
-JSON
-JSP
 JHipster
 jQuery
+JSON
+JSP
 Laravel
 Lift
 Linux
 Mason
-Maven
 Matlab
+Maven
 Meteor
 Mojolicious
 mongodb
@@ -79,19 +80,19 @@ Python
 Quixote
  R,
 React
-React)
+React Native
 React,
 React.js
 React.js
 React.js
-React Native
+React)
 Redux
 REST
 Robot-framework
 Ruby 
+Ruby on Rails
 Ruby,
 Ruby)
-Ruby on Rails
 Rust
 Sails.js
 sass
