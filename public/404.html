@@ -1,211 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>404 Not found.</title>
 </head>
-<body style="font-family: 'Courier New', Courier, monospace; text-align: center; background-color: black; color: whitesmoke">
+
+<body
+    style="font-family: 'Courier New', Courier, monospace; text-align: center; background-color: black; color: whitesmoke">
     <h1>404</h1>
     <h3>Oops... It seems that I couldn't find anything :( </h3>
-    <button id="funButton" style="font-size: large; display: block; margin: auto;" onclick="funButtonPressed()">Maybe pressing this <br> will make it up to you ;)</button>
-    <canvas width="400px" height="400px" id="myCanvas" style="visibility: hidden; margin: 2em auto auto auto; background-color: darkslategray;
-    border: 4px dashed black;"></canvas>
+    <button id="funButton" style="font-size: large; display: block; margin: auto;" onclick="funButtonPressed()">Maybe
+        pressing this <br> will make it up to you ;)</button>
+    <canvas width="400px" height="400px" id="myCanvas" style="visibility: hidden; margin: 1.5em auto auto auto; background-color: #A1C503;
+    border: 4px solid black;"></canvas>
+
     <script>
-document.getElementById('funButton').addEventListener('click', funButtonPressed())
-var funButton = document.getElementById('funButton')
-funButton.onclick = function() {funButtonPressed()}
 
-function funButtonPressed() {
-    var c = document.getElementById("myCanvas");
-    funButton.disabled = true;
-    c.style.visibility = "visible";
-    
-    var ctx = c.getContext("2d");
-    
-    let blocksize = 20;
-    let rightLimit = c.clientWidth-blocksize;
-    let bottomLimit = c.clientHeight-blocksize;
+        function funButtonPressed() {
+            let funButton = document.getElementById('funButton')
+            let c = document.getElementById("myCanvas");
+            c.style.visibility = "visible";
 
-    
-    let tail = [];
-    let headX = c.clientWidth/2;
-    let headY = c.clientHeight/2;
-    let movement = 20;
-    let tailLength = 3;
-    let tailCollision = false;
-    let i = 0;
+            var ctx = c.getContext("2d");
 
-    let appleX;
-    let appleY;
-    let appleCollision = false;
-    
-    let moveUp = false;
-    let moveDown = false;
-    let moveLeft = false;
-    let moveRight = true;
-    
-    
-    
-    
-    
-    function draw() {
-        ctx.clearRect(0, 0, 400, 400)
-        drawHead();
-        drawApple();
-        
-        if (i<= tailLength){
-            tail[i] = {tailpartX: headX, tailpartY: headY};
-            i++;
-            if (i > tailLength) {i=0;}
-            
-        }
-        
-        
-        drawTail();
-        
-        console.clear();
-        console.log("moveUp: " + moveUp +
-        "\nmoveDown: " + moveDown +
-        "\nmoveRight: " + moveRight +
-        "\nmoveLeft: " + moveLeft);
-        console.log(headX + " " + headY);
-        console.log(tail);
-                
-        if(headX <= rightLimit && headY <= bottomLimit && headX >= 0 && headY >= 0){
-                if (moveUp == true) {
-                    headY -= movement;
+            let blocksize = 20;
+            let rightLimit = c.clientWidth - blocksize;
+            let bottomLimit = c.clientHeight - blocksize;
+
+
+            let tail = [];
+            let headX = c.clientWidth / 2;
+            let headY = c.clientHeight / 2;
+            let movement = 20;
+            let tailLength = 3;
+            let tailCollision = false;
+            let i = 0;
+
+            let appleX;
+            let appleY;
+            let appleCollision = false;
+
+            let moveUp = false;
+            let moveDown = false;
+            let moveLeft = false;
+            let moveRight = true;
+
+
+
+
+
+            function draw() {
+                ctx.clearRect(0, 0, 400, 400)
+                drawHead();
+                drawApple();
+
+                if (i <= tailLength) {
+                    tail[i] = { tailpartX: headX, tailpartY: headY };
+                    i++;
+                    if (i > tailLength) { i = 0; }
+
                 }
-                else if (moveDown == true) {
-                    headY += movement;
+
+
+                drawTail();
+
+                console.clear();
+                console.log("moveUp: " + moveUp +
+                    "\nmoveDown: " + moveDown +
+                    "\nmoveRight: " + moveRight +
+                    "\nmoveLeft: " + moveLeft);
+                console.log(headX + " " + headY);
+                console.log(tail);
+
+                if (headX <= rightLimit && headY <= bottomLimit && headX >= 0 && headY >= 0) {
+                    if (moveUp == true) {
+                        headY -= movement;
+                    }
+                    else if (moveDown == true) {
+                        headY += movement;
+                    }
+                    else if (moveRight == true) {
+                        headX += movement;
+                    }
+                    else if (moveLeft == true) {
+                        headX -= movement;
+                    }
                 }
-                else if (moveRight == true) {
-                    headX += movement;
-                }
-                else if (moveLeft == true) {
-                    headX -= movement;
-                }
-            }
-            else 
-            {
-                gameOver();
-            }
-        }
-        
-        function drawHead() {
-            for (let index = 0; index < tail.length; index++) {
-                if(headX == tail[index].tailpartX && headY == tail[index].tailpartY){
+                else {
                     gameOver();
                 }
-                
             }
 
-            ctx.beginPath();
-            ctx.strokeStyle = "black";
-            ctx.fillStyle = "green";
-            ctx.rect(headX, headY, blocksize, blocksize);
-            ctx.fill();
-            ctx.stroke();
-            ctx.closePath();
-        };
-        
-        function drawTail() {
-            tail.forEach(e => {
+            function drawHead() {
+                for (let index = 0; index < tail.length; index++) {
+                    if (headX == tail[index].tailpartX && headY == tail[index].tailpartY) {
+                        gameOver();
+                    }
+
+                }
+
                 ctx.beginPath();
-                ctx.strokeStyle = "black";
-                ctx.fillStyle = "green";
-                ctx.rect(e.tailpartX, e.tailpartY, blocksize, blocksize);
+                ctx.strokeStyle = "#A1C503";
+                ctx.fillStyle = "black";
+                ctx.rect(headX, headY, blocksize, blocksize);
                 ctx.fill();
                 ctx.stroke();
                 ctx.closePath();
-            });
-        };
+            };
 
-        function appleLocation(){
-            do {
-                appleCollision = false;
-
-                let unroundedX = Math.floor(Math.random() * (401-blocksize));
-                let unroundedY = Math.floor(Math.random() * (401-blocksize));
-                appleX = Math.round(unroundedX / 20) * 20;
-                appleY = Math.round(unroundedY / 20) * 20;
-
+            function drawTail() {
                 tail.forEach(e => {
-                    if(appleX == e.tailpartX && appleY == e.tailpartY)
-                    {
-                        appleCollision = true;
-                    }
+                    ctx.beginPath();
+                    ctx.strokeStyle = "#A1C503";
+                    ctx.rect(e.tailpartX, e.tailpartY, blocksize, blocksize);
+                    ctx.fill();
+                    ctx.stroke();
+                    ctx.closePath();
                 });
-                
-                if (appleX == headX && appleY == headY) {appleCollision = true}
-                
-            } while (appleCollision == true)
-        }
+            };
 
-        function drawApple() {
-            if(appleX == null || appleY == null){
-                appleLocation();
-                drawApple();
-            }
-            ctx.beginPath();
-            ctx.strokeStyle = "black";
-            ctx.fillStyle = "red";
-            ctx.rect(appleX, appleY, blocksize, blocksize);
-            ctx.fill();
-            ctx.stroke();
-            ctx.closePath();
+            function appleLocation() {
+                do {
+                    appleCollision = false;
 
-            if(headX == appleX && headY == appleY){
-                appleLocation();
-                tailLength++;
-            }
-        }
+                    let unroundedX = Math.floor(Math.random() * (401 - blocksize));
+                    let unroundedY = Math.floor(Math.random() * (401 - blocksize));
+                    appleX = Math.round(unroundedX / 20) * 20;
+                    appleY = Math.round(unroundedY / 20) * 20;
 
-        function gameOver() {
-            alert("GAME OVER");
-            document.location.reload();
-            clearInterval(interval);
-        }
-        
-        document.addEventListener("keydown", keyDownHandler);
-        
-        function keyDownHandler(e) {
-            if
-            ((e.key == "up" || e.key == "ArrowUp") && (moveDown != true && moveUp != true))
-            {
-                moveDown = false; 
-                moveLeft = false; 
-                moveRight = false;
-                moveUp = true;
+                    tail.forEach(e => {
+                        if (appleX == e.tailpartX && appleY == e.tailpartY) {
+                            appleCollision = true;
+                        }
+                    });
+
+                    if (appleX == headX && appleY == headY) { appleCollision = true }
+
+                } while (appleCollision == true)
             }
-            else if
-            ((e.key == "down" || e.key == "ArrowDown") && (moveDown != true && moveUp != true))
-            {
-                moveUp = false; 
-                moveLeft = false; 
-                moveRight = false;
-                moveDown = true;
+
+            function drawApple() {
+                if (appleX == null || appleY == null) {
+                    appleLocation();
+                    drawApple();
+                }
+                ctx.beginPath();
+                ctx.strokeStyle = "#A1C503";
+                ctx.rect(appleX, appleY, blocksize, blocksize);
+                ctx.fill();
+                ctx.stroke();
+                ctx.closePath();
+
+                if (headX == appleX && headY == appleY) {
+                    appleLocation();
+                    tailLength++;
+                }
             }
-            else if
-            ((e.key == "right" || e.key == "ArrowRight") && (moveLeft != true && moveRight != true))
-            {
-                moveUp = false; 
-                moveLeft = false; 
-                moveDown = false;
-                moveRight = true;
+
+            function gameOver() {
+                alert("GAME OVER");
+                document.location.reload();
+                clearInterval(interval);
             }
-            else if
-            ((e.key == "left" || e.key == "ArrowLeft") && (moveLeft != true && moveRight != true))
-            {
-                moveUp = false; 
-                moveRight = false; 
-                moveDown = false;
-                moveLeft = true;
+
+            document.addEventListener("keydown", keyDownHandler);
+
+            function keyDownHandler(e) {
+                if
+                    ((e.key == "up" || e.key == "ArrowUp") && (moveDown != true && moveUp != true)) {
+                    moveDown = false;
+                    moveLeft = false;
+                    moveRight = false;
+                    moveUp = true;
+                }
+                else if
+                    ((e.key == "down" || e.key == "ArrowDown") && (moveDown != true && moveUp != true)) {
+                    moveUp = false;
+                    moveLeft = false;
+                    moveRight = false;
+                    moveDown = true;
+                }
+                else if
+                    ((e.key == "right" || e.key == "ArrowRight") && (moveLeft != true && moveRight != true)) {
+                    moveUp = false;
+                    moveLeft = false;
+                    moveDown = false;
+                    moveRight = true;
+                }
+                else if
+                    ((e.key == "left" || e.key == "ArrowLeft") && (moveLeft != true && moveRight != true)) {
+                    moveUp = false;
+                    moveRight = false;
+                    moveDown = false;
+                    moveLeft = true;
+                }
             }
-        }
-        
-        setInterval(draw, 100);
-    };
+
+            setInterval(draw, 100);
+        };
     </script>
 </body>
+
 </html>
