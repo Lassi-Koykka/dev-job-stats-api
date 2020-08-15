@@ -35,6 +35,25 @@ app.get("/", (req, res) => {
 
 app.use("/api", api);
 
+app.use((req, res) => {
+  res.status(404);
+
+  // respond with html page
+  if (req.accepts('html')) {
+      res.sendFile(path.join(__dirname, 'public', '404.html'));
+      return;
+    }
+
+  // respond with json
+  if (req.accepts('json')) {
+    res.send({ error: 'Not found' });
+    return;
+  }
+
+  // default to plain-text. send()
+  res.type('txt').send('Not found');
+});
+
 //Define the port and start the server
 const PORT = process.env.PORT || 5000;
 

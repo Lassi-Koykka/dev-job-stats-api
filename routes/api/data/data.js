@@ -15,7 +15,22 @@ router.route("/:key")
         if (data[key] !== undefined) {
             res.json(data[key])
         } else {
-            res.status(404).sendFile(path.join(__dirname, '..', '..', '..', 'public', '404.html'))
+            res.status(404);
+            
+            // respond with html page
+            if (req.accepts('html')) {
+              res.sendFile(path.join(__dirname, '..', '..', '..', 'public', '404.html'));
+              return;
+            }
+          
+            // respond with json
+            if (req.accepts('json')) {
+              res.send({ error: 'Not found' });
+              return;
+            }
+          
+            // default to plain-text. send()
+            res.type('txt').send('Not found');
         }
     });
 
