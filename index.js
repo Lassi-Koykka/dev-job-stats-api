@@ -1,12 +1,13 @@
 const express = require("express");
 const path = require("path");
+const cron = require('node-cron');
 const fs = require("fs")
-const dataExists = require("./src/dataExists.js");
-const updateJson = require("./src/updateJson.js")
+const dataExists = require(path.join(__dirname,"src","dataExists.js"))
+const updateJson = require(path.join(__dirname,"src","updateJson.js"))
 
 
 //MIDDLEWARE
-const logger = require("./middleware/logger");
+const logger = require(path.join(__dirname,"middleware","logger"))
 
 //ROUTES
 const api = require(path.join(__dirname, 'routes', 'api', 'api'))
@@ -21,6 +22,23 @@ let { data, posts } = dataExists()
 
 //MIDDLEWARE
 app.use(logger);
+
+let makeKeysLower = (data) => {
+  var key, keys = Object.keys(data);
+  var n = keys.length;
+  var formattedData={}
+  while (n--) {
+    key = keys[n];
+    formattedData[key.toLowerCase().replace(/ /g, '-')] = data[key];
+  }
+  return formattedData
+}
+
+Object.keys(data).forEach(key => {
+  data[key] = makeKeysLower(data[key])
+});
+data = makeKeysLower(data)
+
 
 app.locals.data = data
 app.locals.posts = posts
@@ -53,6 +71,14 @@ app.use((req, res) => {
   // default to plain-text. send()
   res.type('txt').send('Not found');
 });
+
+
+
+//Schedule cron to update the json data every 15 minutes
+cron.schedule("0,15,30,45 * * * *", function() {
+  console.log("SCHEDULED DATA UPDATE:")
+  updateJson()
+})
 
 //Define the port and start the server
 const PORT = process.env.PORT || 5000;

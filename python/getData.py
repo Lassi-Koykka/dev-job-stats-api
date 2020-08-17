@@ -3,6 +3,7 @@ import requests;
 import json;
 import asyncio;
 import aiohttp;
+import traceback;
 from pathlib import Path;
 from collections import Counter;
 
@@ -157,8 +158,10 @@ companies = dict()
 locations = dict()
 data = dict()
 
-KWList = readKeywords(Path('./keywords/technologies.txt'))
-allMentions, count = asyncio.run(handleData())
-formatAndCreateJson(count, allMentions)
-
+try:
+    KWList = readKeywords(Path('./keywords/technologies.txt'))
+    allMentions, count = asyncio.run(handleData())
+    formatAndCreateJson(count, allMentions)
+except Exception:
+    print(traceback.format_exc())
 

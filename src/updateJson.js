@@ -4,8 +4,6 @@ const { spawn } = require('child_process');
 
 //Update all the json files by running the getData python script
 async function updateJson() {
-    console.log(path.join(__dirname, '..', 'python', 'getData.py'))
-
 
     const python = spawn(
       path.join(__dirname, '..', 'python', 'venv', 'bin', 'python3'), 
