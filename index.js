@@ -1,7 +1,6 @@
 const express = require("express");
 const path = require("path");
 const cron = require('node-cron');
-const fs = require("fs")
 const dataExists = require(path.join(__dirname,"src","dataExists.js"))
 const updateJson = require(path.join(__dirname,"src","updateJson.js"))
 
@@ -29,16 +28,22 @@ let makeKeysLower = (data) => {
   var formattedData={}
   while (n--) {
     key = keys[n];
-    formattedData[key.toLowerCase().replace(/ /g, '-')] = data[key];
+    if (key.includes('Helsinki')){
+      formattedData['helsinki'] = data[key];
+    } else {
+      formattedData[key.toLowerCase().replace(/ /g, '-')] = data[key];
+    }
   }
   return formattedData
 }
 
+
 Object.keys(data).forEach(key => {
-  data[key] = makeKeysLower(data[key])
+  if( key !== 'posts_count') {
+    data[key] = makeKeysLower(data[key])
+  }
 });
 data = makeKeysLower(data)
-
 
 app.locals.data = data
 app.locals.posts = posts
