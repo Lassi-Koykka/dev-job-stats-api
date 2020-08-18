@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const { spawn } = require('child_process');
+const { spawnSync, spawn } = require('child_process');
 
 //Update all the json files by running the getData python script
 async function updateJson() {
@@ -27,4 +27,16 @@ async function updateJson() {
     });
   }
 
-  module.exports = updateJson;
+  function updateJsonSync() {
+
+    spawnSync(
+      path.join(__dirname, '..', 'python', 'venv', 'bin', 'python3'), 
+      [path.join(__dirname, '..', 'python', 'getData.py')])
+    
+      let data = JSON.parse(fs.readFileSync(path.join("json","data.json")))
+      let posts = JSON.parse(fs.readFileSync(path.join("json","posts.json")))
+      return {data, posts}
+
+  }
+
+  module.exports = { updateJson , updateJsonSync }

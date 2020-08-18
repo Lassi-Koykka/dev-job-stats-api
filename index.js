@@ -1,12 +1,14 @@
 const express = require("express");
 const path = require("path");
 const cron = require('node-cron');
-const dataExists = require(path.join(__dirname,"src","dataExists.js"))
-const updateJson = require(path.join(__dirname,"src","updateJson.js"))
+const util = require('util');
+const makeDataKeysLower = require(path.join(__dirname, "src", "makeKeysLower.js"));
+const dataExists = require(path.join(__dirname, "src", "dataExists.js"))
+const {updateJsonSync,updateJson} = require(path.join(__dirname, "src", "updateJson.js"))
 
 
 //MIDDLEWARE
-const logger = require(path.join(__dirname,"middleware","logger"))
+const logger = require(path.join(__dirname, "middleware", "logger"))
 
 //ROUTES
 const api = require(path.join(__dirname, 'routes', 'api', 'api'))
@@ -17,33 +19,15 @@ const app = express();
 //Run on startup
 //Checks if all the json files inside the folder exist before starting the server and creates them if needed.
 //Returns the data and posts objects
-let { data, posts } = dataExists()
-
+let {
+  data,
+  posts
+} = dataExists()
 //MIDDLEWARE
 app.use(logger);
 
-let makeKeysLower = (data) => {
-  var key, keys = Object.keys(data);
-  var n = keys.length;
-  var formattedData={}
-  while (n--) {
-    key = keys[n];
-    if (key.includes('Helsinki')){
-      formattedData['helsinki'] = data[key];
-    } else {
-      formattedData[key.toLowerCase().replace(/ /g, '-')] = data[key];
-    }
-  }
-  return formattedData
-}
 
-
-Object.keys(data).forEach(key => {
-  if( key !== 'posts_count') {
-    data[key] = makeKeysLower(data[key])
-  }
-});
-data = makeKeysLower(data)
+data = makeDataKeysLower(data)
 
 app.locals.data = data
 app.locals.posts = posts
@@ -63,13 +47,15 @@ app.use((req, res) => {
 
   // respond with html page
   if (req.accepts('html')) {
-      res.sendFile(path.join(__dirname, 'public', '404.html'));
-      return;
-    }
+    res.sendFile(path.join(__dirname, 'public', '404.html'));
+    return;
+  }
 
   // respond with json
   if (req.accepts('json')) {
-    res.send({ error: 'Not found' });
+    res.send({
+      error: 'Not found'
+    });
     return;
   }
 
@@ -79,10 +65,22 @@ app.use((req, res) => {
 
 
 
+
 //Schedule cron to update the json data every 15 minutes
-cron.schedule("0,15,30,45 * * * *", function() {
+cron.schedule("0,15,30,44 * * * *", function () {
   console.log("SCHEDULED DATA UPDATE:")
-  updateJson()
+  let async_update = util.promisify(updateJson)
+  async_update().then((obj) => {
+    obj.data = makeDataKeysLower(obj.data)
+    if (obj.data != data) {
+      console.log("Some of the data has changed!")
+    }
+    data = obj.data
+    posts = obj.posts
+    app.locals.data = data
+    app.locals.posts = data
+    console.log('updated')
+  })
 })
 
 //Define the port and start the server

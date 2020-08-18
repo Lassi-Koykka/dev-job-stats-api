@@ -79,17 +79,14 @@ Pylons web framework
 Python
 Quixote
  R,
-React
+ React 
 React Native
 React,
-React.js
-React.js
 React.js
 React)
 Redux
 REST
 Robot-framework
-Ruby 
 Ruby on Rails
 Ruby,
 Ruby)

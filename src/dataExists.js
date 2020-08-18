@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path');
-const updateJson = require('./updateJson.js')
+const {updateJsonSync} = require('./updateJson.js')
 
 function dataExists() {
     let data
@@ -20,7 +20,7 @@ function dataExists() {
         return ({ data, posts })
     } else {
         console.log("Not all JSON files were found. Re-Creating them...")
-        return (updateJson())
+        return (updateJsonSync())
     }
 }
 
