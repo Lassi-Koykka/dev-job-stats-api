@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const { spawnSync, spawn } = require('child_process');
+const { Console } = require('console');
 
 //Update all the json files by running the getData python script
 async function updateJson() {
@@ -20,7 +21,7 @@ async function updateJson() {
       if (code === 0) {
         let data = JSON.parse(fs.readFileSync(path.join("json","data.json")))
         let posts = JSON.parse(fs.readFileSync(path.join("json","posts.json")))
-        return {data, posts}
+        return ({data, posts})
       } else {
         throw "ERROR: An error occurred while updating data!"
       }
@@ -29,14 +30,19 @@ async function updateJson() {
 
   function updateJsonSync() {
 
-    spawnSync(
-      path.join(__dirname, '..', 'python', 'venv', 'bin', 'python3'), 
+    const python = spawnSync(
+      path.join(__dirname, '..', 'python', 'venv', 'bin', 'python3'),
       [path.join(__dirname, '..', 'python', 'getData.py')])
-    
-      let data = JSON.parse(fs.readFileSync(path.join("json","data.json")))
-      let posts = JSON.parse(fs.readFileSync(path.join("json","posts.json")))
-      return {data, posts}
 
+    let code = python.status
+    console.log(python.stdout.toString())
+    if(code !== 0) {
+      throw "ERROR: An error occurred while updating data!"
+    }
+
+    let data = JSON.parse(fs.readFileSync(path.join("json", "data.json")))
+    let posts = JSON.parse(fs.readFileSync(path.join("json", "posts.json")))
+    return { data, posts }
   }
 
   module.exports = { updateJson , updateJsonSync }

@@ -1,10 +1,11 @@
 const express = require("express");
 const path = require("path");
 const cron = require('node-cron');
-const util = require('util');
+const { isEqual } = require('lodash');
+const { detResType } = require(path.join(__dirname, 'src', 'detResType.js'))
 const makeDataKeysLower = require(path.join(__dirname, "src", "makeKeysLower.js"));
 const dataExists = require(path.join(__dirname, "src", "dataExists.js"))
-const {updateJsonSync,updateJson} = require(path.join(__dirname, "src", "updateJson.js"))
+const {updateJsonSync} = require(path.join(__dirname, "src", "updateJson.js"))
 
 
 //MIDDLEWARE
@@ -44,43 +45,26 @@ app.use("/api", api);
 
 app.use((req, res) => {
   res.status(404);
-
-  // respond with html page
-  if (req.accepts('html')) {
-    res.sendFile(path.join(__dirname, 'public', '404.html'));
-    return;
-  }
-
-  // respond with json
-  if (req.accepts('json')) {
-    res.send({
-      error: 'Not found'
-    });
-    return;
-  }
-
-  // default to plain-text. send()
-  res.type('txt').send('Not found');
+  detResType(req, res, path.join(__dirname, 'public', '404.html'))
 });
 
-
-
-
 //Schedule cron to update the json data every 15 minutes
-cron.schedule("0,15,30,44 * * * *", function () {
-  console.log("SCHEDULED DATA UPDATE:")
-  let async_update = util.promisify(updateJson)
-  async_update().then((obj) => {
+cron.schedule("0,15,30,45 * * * *", async () => {
+  try {
+    console.log("\nSCHEDULED DATA UPDATE:\n")
+    obj = await updateJsonSync()
     obj.data = makeDataKeysLower(obj.data)
-    if (obj.data != data) {
+    if (isEqual(obj.data, data)) {
       console.log("Some of the data has changed!")
     }
     data = obj.data
     posts = obj.posts
     app.locals.data = data
     app.locals.posts = data
-    console.log('updated')
-  })
+    console.log('UPDATE DONE')
+  } catch (error) {
+    console.log(error)
+  }
 })
 
 //Define the port and start the server
