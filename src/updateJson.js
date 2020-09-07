@@ -28,9 +28,7 @@ async function updateJson() {
 
   function updateJsonSync() {
 
-    const python = spawnSync(
-      path.join(__dirname, '..', 'python', 'venv', 'bin', 'python3'),
-      [path.join(__dirname, '..', 'python', 'getData.py')])
+    const python = spawnSync('python3', [path.join(__dirname, '..', 'python', 'getData.py')])
 
     let code = python.status
     console.log(python.stdout.toString())
