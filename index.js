@@ -20,10 +20,7 @@ const app = express();
 //Run on startup
 //Checks if all the json files inside the folder exist before starting the server and creates them if needed.
 //Returns the data and posts objects
-let {
-  data,
-  posts
-} = dataExists()
+let { data, posts } = dataExists()
 //MIDDLEWARE
 app.use(logger);
 
@@ -40,6 +37,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'))
 })
+
+const rateLimit = require("express-rate-limit");
+ 
+
+app.set('trust proxy', 1);
+ 
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 //Requests per windowMs
+});
+ 
+// only apply to requests that begin with /api/
+app.use("/api/", apiLimiter);
 
 app.use("/api", api);
 
