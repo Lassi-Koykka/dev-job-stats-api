@@ -6,9 +6,7 @@ const { Console } = require('console');
 //Update all the json files by running the getData python script
 async function updateJson() {
 
-    const python = spawn(
-      path.join(__dirname, '..', 'python', 'venv', 'bin', 'python3'), 
-      [path.join(__dirname, '..', 'python', 'getData.py')])
+    const python = spawn('python3', [path.join(__dirname, '..', 'python', 'getData.py')])
     console.log("--PYTHON OUTPUT:--")
     
     python.stdout.on('data', function (data) {
