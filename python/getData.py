@@ -46,28 +46,39 @@ async def parseData(postings):
             keywordsFound[i] = keywordsFound[i].strip()
             keywordsFound[i] = keywordsFound[i].replace(",", "").replace(")", "")
 
+        job = {"heading": heading, "link": link, "technologies": list(set(keywordsFound)), "company": company, "location": location}
+
+        for keyword in keywordsFound:
+            if (keyword in technologies):
+                technologies[keyword]['jobs'].append(job)
+            else:
+                technologies[keyword] = dict()
+                technologies[keyword]['jobs'] = []
+                technologies[keyword]['jobs'].append(job)
+
+
         #create company and location dictionaries
         if len(keywordsFound) > 0:
             if company in companies:
                 companies[company]["technologies"] += keywordsFound
-                companies[company]["jobs"].append({"heading": heading, "link": link, "technologies": list(set(keywordsFound)), "company": company, "location": location})
+                companies[company]["jobs"].append(job)
 
             else:
                 companies[company] = dict()
                 companies[company]["name"] = company
                 companies[company]["technologies"] = keywordsFound
                 companies[company]["jobs"] = []
-                companies[company]["jobs"].append({"heading": heading, "link": link, "technologies": list(set(keywordsFound)), "company": company, "location": location})
+                companies[company]["jobs"].append(job)
 
             if location in locations:
                 locations[location]["technologies"] += keywordsFound
-                locations[location]["jobs"].append({"heading": heading, "link": link, "technologies": list(set(keywordsFound)), "company": company, "location": location})
+                locations[location]["jobs"].append(job)
             else:
                 locations[location] = dict()
                 locations[location]["name"] = location
                 locations[location]["technologies"] = keywordsFound
                 locations[location]["jobs"] = []
-                locations[location]["jobs"].append({"heading": heading, "link": link, "technologies": list(set(keywordsFound)), "company": company, "location": location})
+                locations[location]["jobs"].append(job)
 
             keywordMentions += keywordsFound
     return keywordMentions
@@ -109,10 +120,10 @@ async def handleData():
     
     jsonDataToFile({"count": count, "posts": posts}, Path('./json/posts.json'))
 
-    mentions = await asyncio.gather(*tasks, return_exceptions=True)
-
+    mentions = (await asyncio.gather(*tasks, return_exceptions=False))
     for m in mentions:
         allMentionsFound += m
+    
 
     return allMentionsFound, count
 
@@ -122,6 +133,8 @@ def formatAndCreateJson(count, kwMentions):
     global locations
     techCount = dict()
     techCount = Counter(kwMentions)
+    for key in techCount:
+        technologies[key]['count'] = techCount[key]
 
     for key in companies:
         companies[key]["technologies"] = Counter(companies[key]["technologies"])
@@ -133,7 +146,7 @@ def formatAndCreateJson(count, kwMentions):
         locations[key]["jobs_count"] = len(locations[key]["jobs"])
     
     data["posts_count"] = count
-    data["technologies"] = techCount
+    data["technologies"] = technologies
     data["companies"] = companies
     data["locations"] = locations
 
@@ -154,6 +167,7 @@ def jsonDataToFile(d, path):
 
 #VARIABLES
 KWList = []
+technologies = dict()
 companies = dict()
 locations = dict()
 data = dict()

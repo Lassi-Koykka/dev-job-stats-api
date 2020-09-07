@@ -54,6 +54,7 @@ JHipster
 jQuery
 JSON
 JSP
+Kotlin
 Laravel
 Lift
 Linux
