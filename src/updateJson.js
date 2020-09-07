@@ -8,9 +8,9 @@ async function updateJson() {
     const python = spawn('python3', [path.join(__dirname, '..', 'python', 'getData.py')])
     console.log("--PYTHON OUTPUT:--")
     
-    //python.stdout.on('data', function (data) {
-      //console.log(data.toString())
-    //});
+    python.stdout.on('data', function (data) {
+      console.log(data.toString())
+    });
     
     python.on('close', (code) => {
       console.log("--END OF PYTHON OUTPUT--")
@@ -30,7 +30,7 @@ async function updateJson() {
     const python = spawnSync('python3', [path.join(__dirname, '..', 'python', 'getData.py')])
 
     let code = python.status
-    //console.log(python.stdout.toString())
+    console.log(python.stdout.toString())
     if(code !== 0) {
       throw "ERROR: An error occurred while updating data!"
     }
