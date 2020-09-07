@@ -8,9 +8,9 @@ async function updateJson() {
     const python = spawn('python3', [path.join(__dirname, '..', 'python', 'getData.py')])
     console.log("--PYTHON OUTPUT:--")
     
-    python.stdout.on('data', function (data) {
-      console.log(data.toString())
-    });
+    //python.stdout.on('data', function (data) {
+      //console.log(data.toString())
+    //});
     
     python.on('close', (code) => {
       console.log("--END OF PYTHON OUTPUT--")
