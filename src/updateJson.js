@@ -1,7 +1,6 @@
 const path = require('path');
 const fs = require('fs');
 const { spawnSync, spawn } = require('child_process');
-const { Console } = require('console');
 
 //Update all the json files by running the getData python script
 async function updateJson() {
