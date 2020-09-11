@@ -44,7 +44,7 @@ async def parseData(postings):
         
             #strip whitespace and remove , and ) characters from the matches
             keywordsFound[i] = keywordsFound[i].strip()
-            keywordsFound[i] = keywordsFound[i].replace(",", "").replace(")", "").replace("-", "")
+            keywordsFound[i] = keywordsFound[i].replace(",", "").replace(")", "").replace("-", "").replace("(", "")
 
         job = {"heading": heading, "link": link, "technologies": list(set(keywordsFound)), "company": company, "location": location}
 
