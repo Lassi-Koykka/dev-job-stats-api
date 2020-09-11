@@ -6,7 +6,9 @@ Apache
 Apache Cocoon
 Apache Struts
 Apache Wicket
-API
+ API
+-API
+(API
 Asp.net
 Aspnet
 Assembly
@@ -27,8 +29,10 @@ CSS
 Django
 Docker
 Drupal
-Ember
-Ember
+ Ember
+(Ember
+ECMAScript
+ES6
 Express 
 Express,
 Express.js
@@ -39,7 +43,9 @@ Firebase
 Flask
 flutter
 FuelPHP
-git
+ Git
+(Git
+GitHub
 Golang
 Grails
 GraphQL
@@ -112,6 +118,8 @@ Unity
 Vue
 web2py
 webpy
+Wordpress
+WP
 Wt 
 wt,
 wt)
