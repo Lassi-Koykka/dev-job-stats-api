@@ -1,13 +1,306 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <style>
+
+        html{
+            font-size: 1em;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
+            background-color: black;
+            color: whitesmoke;
+        }
+
+        a {
+            color: violet;
+            font-weight: bold;
+        }
+        table {
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        tr{
+            background: gray;
+            font-size: large;
+            color: black;
+        }
+        td{
+            padding: 1em 0em;
+        }
+
+        pre{
+            max-width: 100%;
+            width: min-content;
+            margin: auto;
+            overflow: auto;
+            font-size: 1.5em;
+            background-color: darkolivegreen;
+            color: lightgray;
+            padding: 1em;
+        }
+
+        .description{
+            max-width: 80%;
+            margin: auto;
+        }
+
+        #footer{
+            min-width: 40vw;
+            margin-left: auto;
+            margin-right: auto;   
+        }
+
+    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Finnish Dev Job Api</title>
 </head>
+
 <body>
     <div class="root">
-        
+        <h1 id="welcome-to-finnish-dev-job-api">Welcome to Finnish Dev Job API</h1>
+        <p><img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="GitHub"></p>
+        <p><a href="http://dev-job-api.herokuapp.com/api/">Visit the live version!</a></p>
+        <p class="description">The API uses a Node.js / Express backend which requests, parses, and uses python child process to analyze
+            data about Finnish developer job postings gotten from the Duunitori API every 15 minutes.</p>
+        <p>Requests to the API are limited to 100 requests every 15 minutes.</p>
+        <h2 id="main-endpoints">Main Endpoints</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>URL</th>
+                    <th>Output</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GET</td>
+                    <td>/api</td>
+                    <td>Displays the API page. Future plan is to add a page describing the endpoints.</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/api/posts</td>
+                    <td>Will respond with a Json of all the original job postings gotten from the Duunitori API.</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/api/data</td>
+                    <td>Will respond with a Json of all data parsed from the job postings.</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/api/data/locations</td>
+                    <td>Will respond with a Json of the parsed job data organized by their locations.</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/api/data/locations/:location</td>
+                    <td>Will respond with a Json data of a specific location with the given name.</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/api/data/companies</td>
+                    <td>Will respond with a Json of the parsed job data organized by the company who made the posting.
+                    </td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/api/data/companies/:company</td>
+                    <td>Will respond with a Json data of a specific company with the given name.</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/api/data/technologies</td>
+                    <td>Will respond with a Json data of all technologies mentioned in the job descriptions.</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/api/data/technologies/:tecnology</td>
+                    <td>Will respond with a Json data of a specific technology with the given name.</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/api/data/posts_count</td>
+                    <td>Will respond with a the number of all the job postings parsed.</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2 id="further-endpoints-in-api-data-locations-location">Further endpoints in /api/data/locations/:location
+        </h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>URL</th>
+                    <th>Output</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GET</td>
+                    <td>/name</td>
+                    <td>Will respond with the name of the location.</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/technologies</td>
+                    <td>Will respond with a Json object of all technology keyword occurrances mentioned in job postings
+                        with this location.</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/technologies/:technology</td>
+                    <td>Will respond with the number of occurrances of the specified keyword in the locations job
+                        postings.</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/jobs</td>
+                    <td>Will respond with a Json list of all jobs in the location.</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/jobs_count</td>
+                    <td>Will respond with the number of jobs in the location.</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2 id="further-endpoints-in-api-data-companies-company">Further endpoints in /api/data/companies/:company</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>URL</th>
+                    <th>Output</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GET</td>
+                    <td>/name</td>
+                    <td>Will respond with the name of the company</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/technologies</td>
+                    <td>Will respond with a Json object of all technology keyword occurrances mentioned in the
+                        company&#39;s job postings.</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/technologies/:technology</td>
+                    <td>Will respond with the number of occurrances of the specified keyword in the company&#39;s job
+                        postings.</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/jobs</td>
+                    <td>Will respond with a Json list of all jobs from the company.</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/jobs_count</td>
+                    <td>Will respond with the number of jobs in the company.</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2 id="further-endpoints-in-api-data-technologies-technology">Further endpoints in
+            /api/data/technologies/:technology</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>URL</th>
+                    <th>Output</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GET</td>
+                    <td>/jobs</td>
+                    <td>Will respond with a Json list of all jobs which mention the specified technology.</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/jobs_count</td>
+                    <td>Will respond with the number of jobs which mention the specified technology.</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2 id="further-endpoints-in-location-jobs-company-jobs-and-technology-jobs">Further endpoints in
+            :location/jobs, :company/jobs, and :technology/jobs</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>URL</th>
+                    <th>Output</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GET</td>
+                    <td>/:indx</td>
+                    <td>Will respond with a Json of the specific job with that index.</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/jobs_count</td>
+                    <td>Will respond with the number of jobs which mention the specified technology.</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/:indx/heading</td>
+                    <td>Will respond with the heading of the specific job with that index.</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/:indx/link</td>
+                    <td>Will respond with the Duunitori URL link of the job posting.</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/:indx/technologies</td>
+                    <td>Will respond with a list of all the technologies mentioned in the job posting.</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/:indx/company</td>
+                    <td>Will respond with the company of the specific job with that index.</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/:indx/location</td>
+                    <td>Will respond with the location of the specific job with that index.</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3 id="example-request-">Example request:</h3>
+        <pre><code class="lang-javascript"><span class="hljs-keyword">var</span> requestOptions = {
+  <span class="hljs-attr">method</span>: <span class="hljs-string">'GET'</span>,
+  <span class="hljs-attr">redirect</span>: <span class="hljs-string">'follow'</span>
+};
+<span class="hljs-keyword">let</span> url = <span class="hljs-string">"http://http://dev-job-api.herokuapp.com/api/data/locations/tampere/jobs/1/heading"</span>
+
+fetch(url, requestOptions)
+  .then(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> response.json())
+  .then(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(result))
+  .catch(<span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'error'</span>, error));
+</code></pre>
+        <h3
+            id="footer">
+            If you would like to recommend improvements to this rest api please leave an issue. Thank you and have fun
+            building!</h3>
+
     </div>
 </body>
+
 </html>
