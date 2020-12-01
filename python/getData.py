@@ -4,7 +4,6 @@ import json;
 import asyncio;
 import aiohttp;
 import traceback;
-import re;
 from pathlib import Path;
 from collections import Counter;
 
@@ -39,7 +38,7 @@ async def parseData(postings):
         link = "https://duunitori.fi/tyopaikat/tyo/" + i["slug"]
 
         #List of keywords found in post
-        keywordsFound = list({x for x in KWList if re.search(r"\b" + x + r"\b", s)})
+        keywordsFound = list({x for x in KWList if x in s})
 
         for i in range(len(keywordsFound)):
         
