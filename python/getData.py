@@ -39,7 +39,7 @@ async def parseData(postings):
         link = "https://duunitori.fi/tyopaikat/tyo/" + i["slug"]
 
         #List of keywords found in post
-        keywordsFound = list({x for x in KWList if re.search("\b" + x +"\b")})
+        keywordsFound = list({x for x in KWList if re.search(r"\b" + x + r"\b", s)})
 
         for i in range(len(keywordsFound)):
         
