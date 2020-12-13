@@ -4,6 +4,7 @@ import json;
 import asyncio;
 import aiohttp;
 import traceback;
+import re;
 from pathlib import Path;
 from collections import Counter;
 
@@ -34,11 +35,15 @@ async def parseData(postings):
         s = i['descr'].upper()
         heading = i["heading"]
         company = i["company_name"]
-        location = i["municipality_name"]
+        #Remove zipcodes and '-' signs using regex
+        location = re.sub(r"\d+|-+", '', str(i["municipality_name"])).strip()
+        if(location == ""):
+            location = "none";
         link = "https://duunitori.fi/tyopaikat/tyo/" + i["slug"]
 
         #List of keywords found in post
-        keywordsFound = list({x for x in KWList if x in s})
+        keywordsFound = list(set(re.findall(r"\b(" + '|'.join(KWList)+r")\b", s, re.IGNORECASE)))
+        #keywordsFound = list({x for x in KWList if bool(re.search(r"\b" + x + r"\b", s, re.IGNORECASE))})
 
         for i in range(len(keywordsFound)):
         

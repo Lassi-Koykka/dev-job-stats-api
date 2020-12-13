@@ -7,8 +7,7 @@ Apache Cocoon
 Apache Struts
 Apache Wicket
  API
--API
-(API
+API
 Asp.net
 Aspnet
 Assembly
@@ -16,10 +15,9 @@ AWS
 Bash
 Bootstrap
 Bottle
- C 
- C,
+C
 C#
-C++
+C\+\+
 Cake PHP
 Catalyst
 CherryPy
@@ -29,22 +27,18 @@ CSS
 Django
 Docker
 Drupal
- Ember
-(Ember
+Ember
 ECMAScript
 ES6
 Express 
-Express,
 Express.js
-Express)
 F#
 Fat-Free Framework
 Firebase
 Flask
 flutter
 FuelPHP
- Git
-(Git
+Git
 GitHub
 Golang
 Grails
@@ -52,8 +46,6 @@ GraphQL
 Grok
 HTML
 Java 
-Java,
-Java)
 JavaScript
 Javaserver Pages
 JHipster
@@ -85,21 +77,16 @@ PRADO
 Pylons web framework
 Python
 Quixote
- R,
- React 
+R 
 React Native
-React,
+React
 React.js
-React)
 Redux
- REST
-(Rest
+REST
 Robot-framework
 Ruby on Rails
-Ruby,
-Ruby)
- Rust
-(Rust
+Ruby
+Rust
 Sails.js
 sass
 Scalatra
@@ -121,8 +108,6 @@ webpy
 Wordpress
 WP
 Wt 
-wt,
-wt)
 Yesod
 Yii Framework
 Zend Framework
