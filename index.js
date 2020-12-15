@@ -70,7 +70,7 @@ cron.schedule("0,15,30,45 * * * *", async () => {
     data = obj.data
     posts = obj.posts
     app.locals.data = data
-    app.locals.posts = data
+    app.locals.posts = posts
     console.log('UPDATE DONE')
   } catch (error) {
     console.log(error)
