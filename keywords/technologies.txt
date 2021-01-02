@@ -16,8 +16,6 @@ Bash
 Bootstrap
 Bottle
 C
-C#
-C\+\+
 Cake PHP
 Catalyst
 CherryPy
