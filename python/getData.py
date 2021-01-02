@@ -58,6 +58,7 @@ async def parseData(postings):
                 technologies[keyword]['jobs'].append(job)
             else:
                 technologies[keyword] = dict()
+                technologies[keyword]['name'] = keyword
                 technologies[keyword]['jobs'] = []
                 technologies[keyword]['jobs'].append(job)
 
@@ -139,7 +140,7 @@ def formatAndCreateJson(count, kwMentions):
     techCount = dict()
     techCount = Counter(kwMentions)
     for key in techCount:
-        technologies[key]['count'] = techCount[key]
+        technologies[key]['jobs_count'] = techCount[key]
 
     for key in companies:
         companies[key]["technologies"] = Counter(companies[key]["technologies"])
