@@ -6,7 +6,6 @@ Apache
 Apache Cocoon
 Apache Struts
 Apache Wicket
- API
 API
 Asp.net
 Aspnet
@@ -15,7 +14,6 @@ AWS
 Bash
 Bootstrap
 Bottle
-C
 Cake PHP
 Catalyst
 CherryPy
