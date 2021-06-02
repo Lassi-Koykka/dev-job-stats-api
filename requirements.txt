@@ -19,5 +19,5 @@ requests==2.24.0
 six==1.15.0
 timebudget==0.7.1
 tqdm==4.48.2
-urllib3==1.25.10
+urllib3==1.26.5
 yarl==1.5.1
